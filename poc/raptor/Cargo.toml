@@ -1,0 +1,31 @@
+[package]
+name = "raptor-spike"
+version = "0.0.1"
+edition = "2021"
+license = "MIT"
+description = "Clean-room PoC of the Raptor lattice linkable ring signature (eprint 2018/857) over PQClean Falcon-512. Unaudited research crypto for a testnet PoC. NOT consensus-wired."
+
+# A cdylib (C-ABI surface that the eventual C++11 consumer would link) plus an rlib for the
+# in-crate test harness binary.
+[lib]
+name = "raptor_spike"
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[dependencies]
+sha3 = "0.10"        # SHAKE256 in Rust for H/H1 framing on the Rust side (Falcon's own SHAKE is in C)
+rand = "0.8"
+rand_chacha = "0.3"
+
+[build-dependencies]
+cc = "1.0"
+
+[[bin]]
+name = "harness"
+path = "src/bin/harness.rs"
+
+[profile.release]
+opt-level = 3
+
+[[bin]]
+name = "katprint"
+path = "src/bin/katprint.rs"
